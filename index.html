@@ -146,7 +146,7 @@
                         <canvas id="masteryChart"></canvas>
                     </div>
                     <div class="mt-4 text-center">
-                        <p class="text-3xl font-bold text-blue-600" id="total-score-display">0/14</p>
+                        <p class="text-3xl font-bold text-blue-600" id="total-score-display">0/20</p>
                         <p class="text-xs text-gray-500">Questions Mastered</p>
                     </div>
                 </div>
@@ -320,6 +320,12 @@
                         question: "Minimize Energy. Swim cost = 2x run cost. Canal width $\\sqrt{300}$. Run $x$, swim to point 40m downstream. Find $x$.",
                         answerCriteria: { exact: "30" },
                         solution: "$x=30$ m."
+                    },
+                    {
+                        id: "q_opt_new1", type: "frq", points: 10, title: "Farmer's Fence (New)",
+                        question: "A farmer has 100m of fence to build a rectangular pen against a river (no fence needed on river side). What is the max area?",
+                        answerCriteria: { exact: "1250" },
+                        solution: "1. Constraint: $2x + y = 100 \\implies y = 100-2x$. <br> 2. Area $A = x(100-2x) = 100x - 2x^2$. <br> 3. $A' = 100 - 4x = 0 \\implies x=25$. <br> 4. Max Area = $25(50) = 1250$."
                     }
                 ]
             },
@@ -327,7 +333,19 @@
                 title: "FTC & Integrals", desc: "The Fundamental Theorem.", color: "green", concepts: "Part 1 & 2.",
                 questions: [
                     { id: "q11", type: "mc", points: 4, question: "If $g(x)=\\int_{4}^{x}\\frac{1}{1+t}dt$, find $g'(2)$.", options: ["4/3", "2/5", "1/3", "1/5"], correct: 2, explanation: "1/3." },
-                    { id: "q12", type: "chart", points: 4, question: "Evaluate $\\int_{1}^{8}f(x)dx$ using the graph.", chartId: "chartQ12", options: ["-5", "-3", "-2", "4"], correct: 2, explanation: "-2." }
+                    { id: "q12", type: "chart", points: 4, question: "Evaluate $\\int_{1}^{8}f(x)dx$ using the graph.", chartId: "chartQ12", options: ["-5", "-3", "-2", "4"], correct: 2, explanation: "-2." },
+                    { 
+                        id: "q_ftc_new1", type: "mc", points: 5, title: "Chain Rule (New)",
+                        question: "Find $\\frac{d}{dx} \\int_1^{x^3} \\sin(t) dt$.",
+                        options: ["$\\sin(x^3)$", "$3x^2 \\sin(x^3)$", "$\\cos(x^3)$", "$3x^2 \\cos(x^3)$"], correct: 1,
+                        explanation: "Chain Rule: $f(g(x)) \\cdot g'(x) = \\sin(x^3) \\cdot 3x^2$."
+                    },
+                    {
+                        id: "q_ftc_new2", type: "mc", points: 5, title: "Absolute Value (New)",
+                        question: "Evaluate $\\int_{-2}^{2} |x| dx$.",
+                        options: ["0", "2", "4", "8"], correct: 2,
+                        explanation: "Split into two triangles or use symmetry: $2 \\int_0^2 x dx = 2 [x^2/2]_0^2 = 2(2) = 4$."
+                    }
                 ]
             },
             'substitution': {
@@ -339,16 +357,38 @@
                         question: "Evaluate $\\int x\\sqrt{1-3x}dx$. (Hint: Result has coefficients 2/27 and 2/45). Type coefficients to verify.",
                         answerCriteria: { keywords: ["2/27", "2/45"] },
                         solution: "Solution involves terms with $2/27$ and $2/45$."
+                    },
+                    {
+                        id: "q_sub_new1", type: "mc", points: 5, title: "Log Sub (New)",
+                        question: "Evaluate $\\int \\frac{\\ln x}{x} dx$.",
+                        options: ["$\\ln(\\ln x) + C$", "$\\frac{1}{2}(\\ln x)^2 + C$", "$\\frac{1}{x} + C$", "$(\\ln x)^2 + C$"], correct: 1,
+                        explanation: "$u = \\ln x, du = (1/x) dx$. Integral becomes $\\int u du = u^2/2 + C$."
                     }
                 ]
             },
             'riemann': {
                 title: "Riemann Sums", desc: "Approximating Area.", color: "purple", concepts: "Width * Height.",
-                questions: [ { id: "q10", type: "chart", points: 4, question: "Find $R_4$ for [3,15] from graph.", chartId: "chartQ10", options: ["54", "45", "33", "11"], correct: 2, explanation: "Sum = 33." } ]
+                questions: [ 
+                    { id: "q10", type: "chart", points: 4, question: "Find $R_4$ for [3,15] from graph.", chartId: "chartQ10", options: ["54", "45", "33", "11"], correct: 2, explanation: "Sum = 33." },
+                    {
+                        id: "q_riem_new1", type: "mc", points: 5, title: "Table Estimation (New)",
+                        question: "Given velocities: v(0)=10, v(2)=12, v(4)=15. Estimate distance using Left Sum with $\\Delta t=2$.",
+                        options: ["25", "44", "50", "54"], correct: 1,
+                        explanation: "Left Sum uses left endpoints (t=0, t=2). $\\Delta t (v(0) + v(2)) = 2(10+12) = 2(22) = 44$."
+                    }
+                ]
             },
             'antiderivatives': {
                 title: "Antiderivatives", desc: "Finding F(x).", color: "gray", concepts: "+C rule.",
-                questions: [ { id: "q14", type: "mc", points: 4, question: "If $f'(x)=3+2\\sin x$ and $f(0)=7$, find $f(\\pi)$.", options: ["$3\\pi+13$", "$3\\pi+11$", "$3\\pi+9$"], correct: 1, explanation: "C=9, Answer $3\\pi+11$." } ]
+                questions: [ 
+                    { id: "q14", type: "mc", points: 4, question: "If $f'(x)=3+2\\sin x$ and $f(0)=7$, find $f(\\pi)$.", options: ["$3\\pi+13$", "$3\\pi+11$", "$3\\pi+9$"], correct: 1, explanation: "C=9, Answer $3\\pi+11$." },
+                    {
+                        id: "q_anti_new1", type: "mc", points: 5, title: "Particle Motion (New)",
+                        question: "A particle has acceleration $a(t)=6t$, initial velocity $v(0)=5$, initial position $s(0)=2$. Find position $s(1)$.",
+                        options: ["3", "8", "10", "12"], correct: 1,
+                        explanation: "$v(t) = 3t^2+5$. $s(t)=t^3+5t+2$. $s(1) = 1+5+2=8$."
+                    }
+                ]
             }
         };
 
@@ -624,7 +664,7 @@
                 const chart = Chart.getChart("masteryChart"); if(chart) { chart.data.datasets[0].data = [masteredQ, totalQ - masteredQ]; chart.update(); }
             },
             renderOverviewCharts() {
-                 new Chart(document.getElementById('masteryChart'), { type: 'doughnut', data: { labels: ['Mastered', 'Remaining'], datasets: [{ data: [0, 14], backgroundColor: ['#2563eb', '#e5e7eb'], borderWidth: 0 }] }, options: { cutout: '75%', responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });
+                 new Chart(document.getElementById('masteryChart'), { type: 'doughnut', data: { labels: ['Mastered', 'Remaining'], datasets: [{ data: [0, 20], backgroundColor: ['#2563eb', '#e5e7eb'], borderWidth: 0 }] }, options: { cutout: '75%', responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });
             },
             initStaticChart(chartId) {
                 const ctx = document.getElementById(chartId).getContext('2d');

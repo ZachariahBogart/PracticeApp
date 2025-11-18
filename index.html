@@ -18,7 +18,6 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
 
-    <!-- CRITICAL FIX: Added type="text/tailwindcss" so @apply works -->
     <style type="text/tailwindcss">
         body { font-family: 'Inter', sans-serif; }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -29,22 +28,16 @@
         .nav-item { @apply flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors cursor-pointer mb-1; }
         .nav-item.active { @apply bg-blue-600 text-white shadow-md hover:bg-blue-700 hover:text-white; }
 
-        /* --- IMPROVED MULTIPLE CHOICE BUTTONS --- */
+        /* MULTIPLE CHOICE BUTTONS */
         .btn-option { 
             @apply w-full text-left p-4 border-2 border-gray-200 rounded-xl mb-3 transition-all duration-200 text-gray-700 font-medium relative overflow-hidden bg-white; 
         }
-        
-        /* Hover State (Only when not disabled) */
         .btn-option:not(:disabled):hover {
             @apply bg-blue-50 border-blue-500 text-blue-900 shadow-md -translate-y-0.5 transform cursor-pointer;
         }
-        
-        /* Active/Click State */
         .btn-option:not(:disabled):active {
             @apply bg-blue-100 border-blue-700 transform translate-y-0;
         }
-
-        /* Correct State */
         .btn-option.correct { 
             @apply bg-green-50 border-green-500 text-green-900 shadow-md; 
         }
@@ -58,8 +51,6 @@
             color: #059669;
             font-size: 1.2rem;
         }
-
-        /* Wrong State */
         .btn-option.wrong { 
             @apply bg-red-50 border-red-400 text-red-900 opacity-75; 
         }
@@ -73,18 +64,28 @@
             color: #dc2626;
             font-size: 1.2rem;
         }
-        /* ----------------------------------------- */
-        
-        .chart-wrapper { position: relative; height: 200px; width: 100%; }
 
-        /* Practice Mode Toggle */
-        .toggle-checkbox:checked {
-            right: 0;
-            border-color: #68D391;
+        /* FRQ INPUT STYLES */
+        .frq-input {
+            @apply w-full p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all;
         }
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #68D391;
+        .frq-input.error {
+            @apply border-red-400 bg-red-50 animate-shake;
         }
+        .frq-input.success {
+            @apply border-green-500 bg-green-50;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .animate-shake { animation: shake 0.4s ease-in-out; }
+
+        .chart-wrapper { position: relative; height: 200px; width: 100%; }
+        .toggle-checkbox:checked { right: 0; border-color: #68D391; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #68D391; }
     </style>
 </head>
 <body class="bg-gray-50 h-screen flex flex-col md:flex-row overflow-hidden">
@@ -97,23 +98,23 @@
         </div>
         
         <nav class="flex-1 overflow-y-auto p-4 custom-scrollbar">
-            <div class="nav-item active" onclick="app.navigate('overview')">
+            <div class="nav-item active" onclick="window.app.navigate('overview')">
                 <span class="mr-3">📊</span> Dashboard
             </div>
             <div class="my-4 border-t border-gray-100"></div>
-            <div class="nav-item" onclick="app.navigate('optimization')">
+            <div class="nav-item" onclick="window.app.navigate('optimization')">
                 <span class="mr-3">🏆</span> Optimization
             </div>
-            <div class="nav-item" onclick="app.navigate('ftc')">
+            <div class="nav-item" onclick="window.app.navigate('ftc')">
                 <span class="mr-3">📜</span> FTC & Integrals
             </div>
-            <div class="nav-item" onclick="app.navigate('substitution')">
+            <div class="nav-item" onclick="window.app.navigate('substitution')">
                 <span class="mr-3">🔄</span> Substitution
             </div>
-            <div class="nav-item" onclick="app.navigate('riemann')">
+            <div class="nav-item" onclick="window.app.navigate('riemann')">
                 <span class="mr-3">📏</span> Riemann Sums
             </div>
-            <div class="nav-item" onclick="app.navigate('antiderivatives')">
+            <div class="nav-item" onclick="window.app.navigate('antiderivatives')">
                 <span class="mr-3">↩️</span> Antiderivatives
             </div>
         </nav>
@@ -154,21 +155,21 @@
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 md:col-span-2">
                     <h3 class="font-semibold text-gray-700 mb-4">Recommended Study Path</h3>
                     <div class="space-y-3">
-                        <div onclick="app.navigate('optimization')" class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-100 cursor-pointer hover:bg-blue-100 transition group">
+                        <div onclick="window.app.navigate('optimization')" class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-100 cursor-pointer hover:bg-blue-100 transition group">
                             <div>
                                 <div class="font-bold text-blue-900 group-hover:text-blue-700 transition">1. Optimization (30 pts)</div>
                                 <div class="text-xs text-blue-600">Word problems & graphs. High value.</div>
                             </div>
                             <span class="text-2xl group-hover:translate-x-1 transition">👉</span>
                         </div>
-                        <div onclick="app.navigate('ftc')" class="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-100 cursor-pointer hover:bg-green-100 transition group">
+                        <div onclick="window.app.navigate('ftc')" class="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-100 cursor-pointer hover:bg-green-100 transition group">
                             <div>
                                 <div class="font-bold text-green-900 group-hover:text-green-700 transition">2. FTC & Integrals (32 pts)</div>
                                 <div class="text-xs text-green-600">Core mechanics. Largest section.</div>
                             </div>
                             <span class="text-2xl group-hover:translate-x-1 transition">👉</span>
                         </div>
-                         <div onclick="app.navigate('substitution')" class="flex items-center justify-between p-4 bg-amber-50 rounded-lg border border-amber-100 cursor-pointer hover:bg-amber-100 transition group">
+                         <div onclick="window.app.navigate('substitution')" class="flex items-center justify-between p-4 bg-amber-50 rounded-lg border border-amber-100 cursor-pointer hover:bg-amber-100 transition group">
                             <div>
                                 <div class="font-bold text-amber-900 group-hover:text-amber-700 transition">3. Substitution (22 pts)</div>
                                 <div class="text-xs text-amber-600">Tricky integrals. Don't forget bounds!</div>
@@ -191,8 +192,8 @@
                 <div class="flex items-center gap-4">
                     <!-- Mode Switcher -->
                     <div class="bg-white p-1 rounded-lg border shadow-sm flex">
-                        <button onclick="app.setMode('study')" id="btn-mode-study" class="px-4 py-2 rounded-md text-sm font-medium transition-all bg-gray-100 text-gray-900 shadow-sm">📖 Study</button>
-                        <button onclick="app.setMode('practice')" id="btn-mode-practice" class="px-4 py-2 rounded-md text-sm font-medium transition-all text-gray-500 hover:text-gray-900">⚡ Practice</button>
+                        <button onclick="window.app.setMode('study')" id="btn-mode-study" class="px-4 py-2 rounded-md text-sm font-medium transition-all bg-gray-100 text-gray-900 shadow-sm">📖 Study</button>
+                        <button onclick="window.app.setMode('practice')" id="btn-mode-practice" class="px-4 py-2 rounded-md text-sm font-medium transition-all text-gray-500 hover:text-gray-900">⚡ Practice</button>
                     </div>
                 </div>
             </div>
@@ -212,11 +213,8 @@
 
                 <!-- RIGHT: Questions Container -->
                 <div class="lg:col-span-8">
-                    
                     <!-- STUDY MODE LIST -->
-                    <div id="study-mode-content" class="space-y-6">
-                        <!-- Static Questions Injected Here -->
-                    </div>
+                    <div id="study-mode-content" class="space-y-6"></div>
 
                     <!-- PRACTICE MODE GENERATOR -->
                     <div id="practice-mode-content" class="hidden space-y-6">
@@ -224,15 +222,12 @@
                             <div class="text-4xl mb-4">⚡</div>
                             <h3 class="text-xl font-bold text-gray-900 mb-2">Infinite Practice Mode</h3>
                             <p class="text-gray-600 mb-6">Generate unlimited variations of questions for this topic.</p>
-                            <button onclick="app.generatePracticeQuestion()" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition shadow-lg transform hover:-translate-y-0.5">
+                            <button onclick="window.app.generatePracticeQuestion()" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition shadow-lg transform hover:-translate-y-0.5">
                                 Generate New Question
                             </button>
                         </div>
-                        <div id="generated-question-container" class="hidden">
-                            <!-- Generated Q goes here -->
-                        </div>
+                        <div id="generated-question-container" class="hidden"></div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -249,127 +244,55 @@
             'optimization': () => {
                 let k, wSq, D, xSol;
                 const scenario = randInt(1, 2);
-                
                 if (scenario === 1) {
-                    k = 2;
-                    const leg = randChoice([10, 20, 30]);
-                    wSq = 3 * leg * leg; 
-                    D = leg + randChoice([10, 20]);
-                    xSol = D - leg;
+                    k = 2; const leg = randChoice([10, 20, 30]); wSq = 3 * leg * leg; D = leg + randChoice([10, 20]); xSol = D - leg;
                 } else {
-                    k = 1.25; 
-                    const leg = randChoice([12, 24]); 
-                    const w = leg * 0.75;
-                    wSq = w*w;
-                    D = leg + randChoice([10, 20]);
-                    xSol = D - leg;
+                    k = 1.25; const leg = randChoice([12, 24]); const w = leg * 0.75; wSq = w*w; D = leg + randChoice([10, 20]); xSol = D - leg;
                 }
-
                 return {
-                    type: 'frq',
-                    title: "Captain Efficiency (Variant)",
+                    type: 'frq', title: "Captain Efficiency (Variant)",
                     question: `Swimming energy cost is $${k}$ times running cost. Canal width is $\\sqrt{${wSq}}$ m. Run $x$ m then swim to point ${D} m downstream. Minimize energy. Find $x$.`,
-                    solution: `1. $k=${k}$, Width $w=\\sqrt{${wSq}}$. <br> 2. Optimal condition: $\\frac{w}{\\sqrt{k^2-1}} = \\text{Swim Leg (horizontal)}$. <br> 3. Horizontal Swim Leg = $D-x$. <br> 4. Solve $D-x = \\frac{\\sqrt{${wSq}}}{\\sqrt{${k*k}-1}}$. <br> 5. $x = ${D} - \\text{result}$. <br> 6. **Answer: ${xSol} m**.`
+                    answerCriteria: { exact: xSol.toString() },
+                    solution: `1. $k=${k}$, Width $w=\\sqrt{${wSq}}$. <br> 2. Optimal condition: $\\frac{w}{\\sqrt{k^2-1}} = D-x$. <br> 3. Solve for x. <br> **Answer: ${xSol}**.`
                 };
             },
             'ftc': () => {
-                const lower = randInt(-5, 5);
-                const exponent = randInt(2, 3);
-                const upperFn = (exponent === 2) ? "x^2" : "x^3";
-                const innerFnTex = `\\cos(t)`;
-                const innerFnEval = (exponent === 2) ? `\\cos(x^2)` : `\\cos(x^3)`;
-                const deriv = (exponent === 2) ? `2x` : `3x^2`;
-                
-                const correctAnswerIndex = randInt(0, 3);
-                const options = [];
-                const correctStr = `$${deriv}${innerFnEval}$`;
-                
-                options.push(correctStr);
-                options.push(`$${innerFnEval}$`);
-                options.push(`$${innerFnEval} + C$`);
-                options.push(`$\\sin(${upperFn})$`);
-                
-                const finalOptions = Array(4).fill(null);
-                finalOptions[correctAnswerIndex] = correctStr;
-                let optIdx = 0;
-                for(let i=0; i<4; i++) {
-                    if(i===correctAnswerIndex) continue;
-                    if(options[optIdx] === correctStr) optIdx++;
-                    finalOptions[i] = options[optIdx++];
-                }
-
+                const lower = randInt(-5, 5); const exponent = randInt(2, 3); const upperFn = (exponent === 2) ? "x^2" : "x^3"; const innerFnTex = `\\cos(t)`; const innerFnEval = (exponent === 2) ? `\\cos(x^2)` : `\\cos(x^3)`; const deriv = (exponent === 2) ? `2x` : `3x^2`;
+                const options = [`$${deriv}${innerFnEval}$`, `$${innerFnEval}$`, `$${innerFnEval} + C$`, `$\\sin(${upperFn})$`];
+                const correctIdx = 0; 
+                const shuffled = options.map((val, i) => ({val, i})).sort(() => Math.random() - 0.5);
                 return {
-                    type: 'mc',
-                    title: "FTC Part 1 Chain Rule",
+                    type: 'mc', title: "FTC Part 1 Chain Rule",
                     question: `Find $\\frac{d}{dx} \\int_{${lower}}^{${upperFn}} ${innerFnTex} dt$.`,
-                    options: finalOptions,
-                    correct: correctAnswerIndex,
-                    explanation: `Use Chain Rule: $f(g(x)) \\cdot g'(x)$. <br> $f(t) = \\cos(t)$, $g(x) = ${upperFn}$. <br> Answer = $\\cos(${upperFn}) \\cdot (${deriv})$.`
+                    options: shuffled.map(s => s.val), correct: shuffled.findIndex(s => s.i === correctIdx),
+                    explanation: `Use Chain Rule: $f(g(x)) \\cdot g'(x)$. Answer = $\\cos(${upperFn}) \\cdot (${deriv})$.`
                 };
             },
             'riemann': () => {
-                const n = 4;
-                const width = randInt(2, 5);
-                const start = randInt(0, 5);
-                const end = start + n * width;
-                const yValues = [randInt(1,8), randInt(1,8), randInt(1,8), randInt(1,8)];
-                
+                const n = 4; const width = randInt(2, 5); const start = randInt(0, 5); const end = start + n * width; const yValues = [randInt(1,8), randInt(1,8), randInt(1,8), randInt(1,8)];
                 const sum = yValues.reduce((a,b) => a+b, 0) * width;
-                
                 const chartId = 'chartGen' + Math.random().toString(36).substr(2, 9);
-                
                 return {
-                    type: 'chart-gen',
-                    title: "Right Hand Sum",
-                    question: `Calculate $R_4$ for the interval $[${start}, ${end}]$ based on the graph.`,
-                    chartId: chartId,
-                    chartData: {
-                        labels: [start, start+width, start+2*width, start+3*width, end],
-                        data: [randInt(1,9), ...yValues]
-                    },
-                    options: [`${sum}`, `${sum + randInt(1,10)}`, `${sum - randInt(1,10)}`, `${sum * 2}`],
-                    correct: 0,
-                    explanation: `$\Delta x = ${width}$. Heights at right endpoints: ${yValues.join(', ')}. <br> Sum = $${width}(${yValues.join('+')}) = ${sum}$.`
+                    type: 'chart-gen', title: "Right Hand Sum",
+                    question: `Calculate $R_4$ for $[${start}, ${end}]$.`, chartId: chartId,
+                    chartData: { labels: [start, start+width, start+2*width, start+3*width, end], data: [randInt(1,9), ...yValues] },
+                    options: [`${sum}`, `${sum + randInt(1,10)}`, `${sum - randInt(1,10)}`, `${sum * 2}`], correct: 0,
+                    explanation: `$\\Delta x = ${width}$. Heights: ${yValues.join(', ')}. Sum = ${sum}.`
                 };
             },
-             'substitution': () => {
-                const a = randInt(1, 9);
-                const n = randInt(3, 6);
-                const lower = 0;
-                const upper = 1;
-                
-                const uLower = lower**2 + a;
-                const uUpper = upper**2 + a;
-                
-                const options = [
-                    `$\\int_{${uLower}}^{${uUpper}} \\frac{1}{2} u^{${n}} du$`,
-                    `$\\int_{${lower}}^{${upper}} \\frac{1}{2} u^{${n}} du$`,
-                    `$\\int_{${uLower}}^{${uUpper}} u^{${n}} du$`,
-                    `$\\int_{${uLower}}^{${uUpper}} 2 u^{${n}} du$`
-                ];
-                
+            'substitution': () => {
+                const a = randInt(1, 9); const n = randInt(3, 6); const lower = 0; const upper = 1; const uLower = lower**2 + a; const uUpper = upper**2 + a;
+                const options = [`$\\int_{${uLower}}^{${uUpper}} \\frac{1}{2} u^{${n}} du$`, `$\\int_{${lower}}^{${upper}} \\frac{1}{2} u^{${n}} du$`, `$\\int_{${uLower}}^{${uUpper}} u^{${n}} du$`, `$\\int_{${uLower}}^{${uUpper}} 2 u^{${n}} du$`];
                 return {
-                    type: 'mc',
-                    title: "U-Sub with Bounds",
-                    question: `Rewrite $\\int_{${lower}}^{${upper}} x(x^2 + ${a})^{${n}} dx$ using $u = x^2 + ${a}$.`,
-                    options: [options[0], options[1], options[2], options[3]], 
-                    correct: 0,
-                    explanation: `$u = x^2+${a} \\implies du = 2x dx \\implies \\frac{1}{2}du = x dx$. <br> Lower: $x=${lower} \\to u=${uLower}$. Upper: $x=${upper} \\to u=${uUpper}$.`
+                    type: 'mc', title: "U-Sub with Bounds", question: `Rewrite $\\int_{${lower}}^{${upper}} x(x^2 + ${a})^{${n}} dx$ using $u = x^2 + ${a}$.`,
+                    options: options, correct: 0, explanation: `$u = x^2+${a} \\implies \\frac{1}{2}du = x dx$. Bounds: $${uLower}$ to $${uUpper}$.`
                 };
             },
             'antiderivatives': () => {
-                const C = randInt(1, 10);
-                const k = randInt(2, 5);
-                const targetX = 2;
-                const ans = k*targetX + C;
-                
+                const C = randInt(1, 10); const k = randInt(2, 5); const targetX = 2; const ans = k*targetX + C;
                 return {
-                    type: 'mc',
-                    title: "Initial Value Problem",
-                    question: `If $f'(x) = ${k}$ and $f(0) = ${C}$, find $f(${targetX})$.`,
-                    options: [`${ans}`, `${ans+1}`, `${ans-1}`, `${k*targetX}`],
-                    correct: 0,
-                    explanation: `$f(x) = \\int ${k} dx = ${k}x + C$. <br> $f(0)=${C} \\implies C=${C}$. <br> $f(${targetX}) = ${k}(${targetX}) + ${C} = ${ans}$.`
+                    type: 'mc', title: "Initial Value Problem", question: `If $f'(x) = ${k}$ and $f(0) = ${C}$, find $f(2)$.`,
+                    options: [`${ans}`, `${ans+1}`, `${ans-1}`, `${k*2}`], correct: 0, explanation: `$f(x) = \\int ${k} dx = ${k}x + C$. <br> $f(0)=${C} \\implies C=${C}$. <br> $f(${targetX}) = ${k}(${targetX}) + ${C} = ${ans}$.`
                 };
             }
         };
@@ -377,9 +300,7 @@
         // --- DATA & CONTENT ---
         const topics = {
             'optimization': {
-                title: "Optimization",
-                desc: "Finding Max/Min in applied contexts.",
-                color: "blue",
+                title: "Optimization", desc: "Finding Max/Min in applied contexts.", color: "blue",
                 concepts: `
                     <strong class="block text-gray-900 mb-1">The Protocol:</strong>
                     <ol class="list-decimal list-inside space-y-1 pl-2 mb-4">
@@ -392,318 +313,192 @@
                     </ol>
                 `,
                 questions: [
-                    {
-                        id: "q1", type: "tf", points: 2,
-                        question: "True/False: If c is a critical number and $f''(c)=0$, then f has neither a max nor min at c.",
-                        options: ["True", "False"], correct: 1,
-                        explanation: "False. The 2nd Derivative Test is inconclusive. Use 1st Deriv Test."
-                    },
-                    {
-                        id: "q7", type: "chart", points: 4,
-                        question: "The graph of derivative $f'(x)$ is shown. Where is the local max?",
-                        chartId: "chartQ7",
-                        options: ["x=1", "x=2", "x=3", "x=4"], correct: 3,
-                        explanation: "Local Max happens when $f'(x)$ changes from Positive to Negative (x=4)."
-                    },
-                    {
+                    { id: "q1", type: "tf", points: 2, question: "True/False: If c is a critical number and $f''(c)=0$, then f has neither a max nor min at c.", options: ["True", "False"], correct: 1, explanation: "False. Inconclusive." },
+                    { id: "q7", type: "chart", points: 4, question: "The graph of derivative $f'(x)$ is shown. Where is the local max?", chartId: "chartQ7", options: ["x=1", "x=2", "x=3", "x=4"], correct: 3, explanation: "Local Max where $f'$ changes + to -." },
+                    { 
                         id: "q24", type: "frq", points: 10, title: "Captain Efficiency",
-                        question: "Minimize Energy. Swim cost = 2x run cost. Canal width $\\sqrt{300}$. Run $x$, swim to point 40m downstream.",
+                        question: "Minimize Energy. Swim cost = 2x run cost. Canal width $\\sqrt{300}$. Run $x$, swim to point 40m downstream. Find $x$.",
+                        answerCriteria: { exact: "30" },
                         solution: "$x=30$ m."
                     }
                 ]
             },
             'ftc': {
-                title: "FTC & Integrals",
-                desc: "The Fundamental Theorem of Calculus.",
-                color: "green",
-                concepts: "Part 1: Derivative of Integral. Part 2: Evaluation.",
+                title: "FTC & Integrals", desc: "The Fundamental Theorem.", color: "green", concepts: "Part 1 & 2.",
                 questions: [
-                    {
-                        id: "q11", type: "mc", points: 4,
-                        question: "If $g(x)=\\int_{4}^{x}\\frac{1}{1+t}dt$, find $g'(2)$.",
-                        options: ["4/3", "2/5", "1/3", "1/5"], correct: 2,
-                        explanation: "FTC Part 1: $g'(x) = 1/(1+x)$. Evaluate at 2."
-                    },
-                    {
-                        id: "q12", type: "chart", points: 4,
-                        question: "Evaluate $\\int_{1}^{8}f(x)dx$ using the graph.",
-                        chartId: "chartQ12",
-                        options: ["-5", "-3", "-2", "4"], correct: 2,
-                        explanation: "Area Above - Area Below = -2."
-                    }
+                    { id: "q11", type: "mc", points: 4, question: "If $g(x)=\\int_{4}^{x}\\frac{1}{1+t}dt$, find $g'(2)$.", options: ["4/3", "2/5", "1/3", "1/5"], correct: 2, explanation: "1/3." },
+                    { id: "q12", type: "chart", points: 4, question: "Evaluate $\\int_{1}^{8}f(x)dx$ using the graph.", chartId: "chartQ12", options: ["-5", "-3", "-2", "4"], correct: 2, explanation: "-2." }
                 ]
             },
             'substitution': {
-                title: "Substitution Rule",
-                desc: "Reverse Chain Rule.",
-                color: "amber",
-                concepts: "Pick u, Find du, Change Bounds.",
+                title: "Substitution Rule", desc: "Reverse Chain Rule.", color: "amber", concepts: "Pick u, du, Bounds.",
                 questions: [
-                    {
-                        id: "q22", type: "mc", points: 4,
-                        question: "Transform $\\int_{2}^{3}\\frac{x}{6+x^{2}}dx$ using $u=6+x^2$.",
-                        options: ["$\\int_{2}^{3}\\frac{1}{2u}du$", "$\\int_{10}^{15}\\frac{1}{u}du$", "$\\int_{10}^{15}\\frac{1}{2u}du$"], correct: 2,
-                        explanation: "Bounds become 10 to 15. dx becomes du/2x."
+                    { id: "q22", type: "mc", points: 4, question: "Transform $\\int_{2}^{3}\\frac{x}{6+x^{2}}dx$ using $u=6+x^2$.", options: ["$\\int_{2}^{3}\\frac{1}{2u}du$", "$\\int_{10}^{15}\\frac{1}{u}du$", "$\\int_{10}^{15}\\frac{1}{2u}du$"], correct: 2, explanation: "Bounds 10 to 15." },
+                    { 
+                        id: "q23", type: "frq", points: 10, title: "Tricky Substitution",
+                        question: "Evaluate $\\int x\\sqrt{1-3x}dx$. (Hint: Result has coefficients 2/27 and 2/45). Type coefficients to verify.",
+                        answerCriteria: { keywords: ["2/27", "2/45"] },
+                        solution: "Solution involves terms with $2/27$ and $2/45$."
                     }
                 ]
             },
             'riemann': {
-                title: "Riemann Sums",
-                desc: "Approximating Area.",
-                color: "purple",
-                concepts: "Width * Height Sum.",
-                questions: [
-                     {
-                        id: "q10", type: "chart", points: 4,
-                        question: "Find Right Hand Estimate $R_4$ for [3,15] from graph.",
-                        chartId: "chartQ10",
-                        options: ["54", "45", "33", "11"], correct: 2,
-                        explanation: "Sum of heights * width = 33."
-                    }
-                ]
+                title: "Riemann Sums", desc: "Approximating Area.", color: "purple", concepts: "Width * Height.",
+                questions: [ { id: "q10", type: "chart", points: 4, question: "Find $R_4$ for [3,15] from graph.", chartId: "chartQ10", options: ["54", "45", "33", "11"], correct: 2, explanation: "Sum = 33." } ]
             },
             'antiderivatives': {
-                title: "Antiderivatives",
-                desc: "Finding F(x).",
-                color: "gray",
-                concepts: "Power rule in reverse. +C.",
-                questions: [
-                    {
-                        id: "q14", type: "mc", points: 4,
-                        question: "If $f'(x)=3+2\\sin x$ and $f(0)=7$, find $f(\\pi)$.",
-                        options: ["$3\\pi+13$", "$3\\pi+11$", "$3\\pi+9$"], correct: 1,
-                        explanation: "Integrate and solve for C=9."
-                    }
-                ]
+                title: "Antiderivatives", desc: "Finding F(x).", color: "gray", concepts: "+C rule.",
+                questions: [ { id: "q14", type: "mc", points: 4, question: "If $f'(x)=3+2\\sin x$ and $f(0)=7$, find $f(\\pi)$.", options: ["$3\\pi+13$", "$3\\pi+11$", "$3\\pi+9$"], correct: 1, explanation: "C=9, Answer $3\\pi+11$." } ]
             }
         };
 
         // --- APP LOGIC ---
-        const app = {
+        window.app = {
             currentView: 'overview',
             currentMode: 'study',
             currentTopic: null,
             mastery: new Set(),
-            
-            init() {
-                this.renderOverviewCharts();
-                // Initialize MathJax if present
-            },
+            frqAttempts: {},
 
+            init() { this.renderOverviewCharts(); },
             navigate(viewId) {
                 document.querySelectorAll('.content-view').forEach(el => el.classList.remove('active'));
                 document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                
                 if(viewId === 'overview') {
                     document.getElementById('overview').classList.add('active');
                     document.getElementById('topic-container').classList.add('hidden');
-                    document.querySelector(`.nav-item[onclick="app.navigate('overview')"]`).classList.add('active');
+                    document.querySelector(`.nav-item[onclick="window.app.navigate('overview')"]`).classList.add('active');
                 } else {
                     this.renderTopic(viewId);
                     document.getElementById('overview').classList.remove('active');
                     document.getElementById('topic-container').classList.remove('hidden');
                     document.getElementById('topic-container').classList.add('active');
-                    document.querySelector(`.nav-item[onclick="app.navigate('${viewId}')"]`).classList.add('active');
+                    document.querySelector(`.nav-item[onclick="window.app.navigate('${viewId}')"]`).classList.add('active');
                 }
                 if(window.MathJax) MathJax.typesetPromise();
             },
-
             setMode(mode) {
                 this.currentMode = mode;
-                const studyBtn = document.getElementById('btn-mode-study');
-                const practiceBtn = document.getElementById('btn-mode-practice');
-                const studyContent = document.getElementById('study-mode-content');
-                const practiceContent = document.getElementById('practice-mode-content');
-
+                const study = document.getElementById('study-mode-content');
+                const practice = document.getElementById('practice-mode-content');
+                const btnS = document.getElementById('btn-mode-study');
+                const btnP = document.getElementById('btn-mode-practice');
                 if(mode === 'study') {
-                    studyBtn.classList.replace('text-gray-500', 'text-gray-900');
-                    studyBtn.classList.replace('bg-white', 'bg-gray-100');
-                    studyBtn.classList.add('shadow-sm');
-                    practiceBtn.classList.remove('shadow-sm', 'bg-gray-100', 'text-gray-900');
-                    practiceBtn.classList.add('text-gray-500');
-                    
-                    studyContent.classList.remove('hidden');
-                    practiceContent.classList.add('hidden');
+                    study.classList.remove('hidden'); practice.classList.add('hidden');
+                    btnS.classList.replace('text-gray-500', 'text-gray-900'); btnS.classList.replace('bg-white', 'bg-gray-100'); btnS.classList.add('shadow-sm');
+                    btnP.classList.remove('shadow-sm', 'bg-gray-100', 'text-gray-900'); btnP.classList.add('text-gray-500');
                 } else {
-                    practiceBtn.classList.replace('text-gray-500', 'text-gray-900');
-                    practiceBtn.classList.add('bg-gray-100', 'shadow-sm');
-                    studyBtn.classList.remove('shadow-sm', 'bg-gray-100', 'text-gray-900');
-                    studyBtn.classList.add('text-gray-500');
-                    
-                    studyContent.classList.add('hidden');
-                    practiceContent.classList.remove('hidden');
+                    study.classList.add('hidden'); practice.classList.remove('hidden');
+                    btnP.classList.replace('text-gray-500', 'text-gray-900'); btnP.classList.add('bg-gray-100', 'shadow-sm');
+                    btnS.classList.remove('shadow-sm', 'bg-gray-100', 'text-gray-900'); btnS.classList.add('text-gray-500');
                 }
             },
-
             renderTopic(topicKey) {
                 this.currentTopic = topicKey;
                 const data = topics[topicKey];
-                
-                this.setMode('study'); 
+                this.setMode('study');
                 document.getElementById('generated-question-container').innerHTML = '';
                 document.getElementById('generated-question-container').classList.add('hidden');
                 document.getElementById('practice-placeholder').classList.remove('hidden');
-
                 document.getElementById('topic-title').textContent = data.title;
                 document.getElementById('topic-title').className = `text-3xl font-bold text-${data.color}-900`;
                 document.getElementById('topic-desc').textContent = data.desc;
-                
-                const conceptCard = document.getElementById('concept-card-style');
-                conceptCard.className = `bg-white p-6 rounded-xl shadow-md border-l-4 border-${data.color}-500 sticky top-24 transition-all`;
+                document.getElementById('concept-card-style').className = `bg-white p-6 rounded-xl shadow-md border-l-4 border-${data.color}-500 sticky top-24 transition-all`;
                 document.getElementById('concept-title').className = `font-bold text-xl mb-4 flex items-center text-${data.color}-900`;
                 document.getElementById('concept-content').innerHTML = data.concepts;
 
                 const qList = document.getElementById('study-mode-content');
                 qList.innerHTML = '';
-                
                 data.questions.forEach((q, index) => {
-                    const qCard = this.createQuestionCard(q, index, data.color);
-                    qList.appendChild(qCard);
+                    qList.appendChild(this.createQuestionCard(q, index, data.color));
                     if(q.type === 'chart') setTimeout(() => this.initStaticChart(q.chartId), 0);
                 });
             },
-
             createQuestionCard(q, index, color) {
                 const qCard = document.createElement('div');
                 qCard.className = "bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden transition-all hover:shadow-md";
-                
                 let content = `<div class="p-5"><div class="flex justify-between mb-3"><span class="font-bold text-${color}-900">Question ${index+1} (${q.points} pts)</span>`;
                 if(this.mastery.has(q.id)) content += `<span class="text-green-600 font-bold text-sm">✓ Mastered</span>`;
                 content += `</div><p class="mb-4 text-gray-800 font-medium">${q.question}</p>`;
-
                 if(q.type === 'chart') content += `<div class="h-64 w-full mb-4"><canvas id="${q.chartId}"></canvas></div>`;
 
-                if(q.type === 'mc' || q.type === 'tf' || q.type === 'chart') {
-                    content += `<div class="space-y-2" id="opts-${q.id}">`;
-                    q.options.forEach((opt, i) => {
-                        // Use btn-option class here
-                        content += `<button class="btn-option" onclick="app.checkAnswer('${q.id}', ${i}, ${q.correct})">${opt}</button>`;
-                    });
-                    content += `</div>`;
-                } else if (q.type === 'frq') {
+                if(q.type === 'frq') {
+                    this.frqAttempts[q.id] = 0; 
                     content += `
-                        <button onclick="document.getElementById('sol-${q.id}').classList.remove('hidden')" class="text-blue-600 font-semibold text-sm hover:underline">Show Solution</button>
-                        <div id="sol-${q.id}" class="hidden mt-3 p-4 bg-${color}-50 rounded border border-${color}-100">
-                            <p class="text-sm text-gray-700 mb-3">${q.solution}</p>
-                            <div class="flex gap-2">
-                                <button onclick="app.markMastery('${q.id}', true)" class="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700">I Got It</button>
-                                <button onclick="app.markMastery('${q.id}', false)" class="px-3 py-1 bg-gray-400 text-white rounded text-sm hover:bg-gray-500">Missed It</button>
+                        <div id="frq-container-${q.id}">
+                            <div class="flex gap-2 mb-2">
+                                <input type="text" id="input-${q.id}" placeholder="Type your answer..." class="frq-input" onkeydown="if(event.key==='Enter') window.app.submitFRQ('${q.id}')">
+                                <button onclick="window.app.submitFRQ('${q.id}')" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">Submit</button>
+                            </div>
+                            <div id="feedback-${q.id}" class="hidden mt-3 p-3 rounded text-sm"></div>
+                            <div id="solution-${q.id}" class="hidden mt-3 p-4 bg-${color}-50 rounded border border-${color}-100">
+                                <p class="font-bold text-gray-800 mb-1">Solution:</p>
+                                <p class="text-sm text-gray-700">${q.solution}</p>
                             </div>
                         </div>
                     `;
+                } else {
+                    content += `<div class="space-y-2" id="opts-${q.id}">`;
+                    q.options.forEach((opt, i) => { content += `<button class="btn-option" onclick="window.app.checkAnswer('${q.id}', ${i}, ${q.correct})">${opt}</button>`; });
+                    content += `</div><div id="feedback-${q.id}" class="hidden mt-4 p-3 rounded text-sm"></div>`;
                 }
-
-                content += `<div id="feedback-${q.id}" class="hidden mt-4 p-3 rounded text-sm"></div></div>`;
                 qCard.innerHTML = content;
                 return qCard;
             },
+            submitFRQ(qId) {
+                let qData = null;
+                for(let t in topics) { qData = topics[t].questions.find(x => x.id === qId); if(qData) break; }
+                if(!qData) return; 
 
-            generatePracticeQuestion() {
-                const generator = generators[this.currentTopic];
-                if(!generator) {
-                    alert("Generator coming soon for this topic!");
-                    return;
+                const inputEl = document.getElementById(`input-${qId}`);
+                const feedbackEl = document.getElementById(`feedback-${qId}`);
+                const solutionEl = document.getElementById(`solution-${qId}`);
+                let val = inputEl.value.trim();
+                if(!val) return;
+
+                let isCorrect = false;
+                if(qData.answerCriteria.exact) {
+                    const nums = val.match(/-?\d+(\.\d+)?/g);
+                    if(nums && nums.includes(qData.answerCriteria.exact)) isCorrect = true;
+                    if(val === qData.answerCriteria.exact) isCorrect = true;
+                } else if (qData.answerCriteria.keywords) {
+                    isCorrect = qData.answerCriteria.keywords.every(k => val.includes(k));
                 }
 
-                const q = generator();
-                const qId = 'gen_' + Date.now(); // Unique ID
-                q.id = qId; // Assign ID
-                
-                const container = document.getElementById('generated-question-container');
-                container.innerHTML = ''; // Clear previous
-                container.classList.remove('hidden');
-                document.getElementById('practice-placeholder').classList.add('hidden');
+                this.frqAttempts[qId]++;
+                const attempts = this.frqAttempts[qId];
 
-                const card = document.createElement('div');
-                card.className = "bg-blue-50 border-2 border-blue-200 rounded-xl shadow-md overflow-hidden animate-fade-in";
-                
-                let content = `<div class="p-6">
-                    <div class="flex justify-between mb-3">
-                        <span class="font-bold text-blue-900 uppercase tracking-wider text-sm">⚡ Practice: ${q.title}</span>
-                        <button onclick="app.generatePracticeQuestion()" class="text-xs bg-white border px-2 py-1 rounded hover:bg-gray-50">New Q</button>
-                    </div>
-                    <p class="mb-6 text-gray-800 text-lg font-medium leading-relaxed">${q.question}</p>`;
-
-                if(q.type === 'chart-gen') {
-                    content += `<div class="h-64 w-full mb-4 bg-white rounded border"><canvas id="${q.chartId}"></canvas></div>`;
-                }
-
-                if(q.type === 'mc' || q.type === 'tf' || q.type === 'chart-gen') {
-                    const indices = q.options.map((_, i) => i);
-                    for (let i = indices.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [indices[i], indices[j]] = [indices[j], indices[i]];
+                if(isCorrect) {
+                    inputEl.classList.remove('error'); inputEl.classList.add('success');
+                    inputEl.disabled = true;
+                    feedbackEl.className = "mt-3 p-3 bg-green-100 text-green-800 rounded block";
+                    feedbackEl.innerHTML = "<strong>Correct!</strong> Great job.";
+                    solutionEl.classList.remove('hidden');
+                    this.markMastery(qId, true);
+                } else {
+                    if(attempts >= 3) {
+                        inputEl.classList.add('error'); inputEl.disabled = true;
+                        feedbackEl.className = "mt-3 p-3 bg-red-100 text-red-800 rounded block";
+                        feedbackEl.innerHTML = "<strong>Incorrect.</strong> No attempts left.";
+                        solutionEl.classList.remove('hidden');
+                    } else {
+                        inputEl.classList.add('error');
+                        setTimeout(() => inputEl.classList.remove('error'), 500);
+                        feedbackEl.className = "mt-3 p-3 bg-yellow-50 text-yellow-800 rounded block";
+                        feedbackEl.innerHTML = `<strong>Incorrect.</strong> ${3 - attempts} attempts remaining.`;
                     }
-                    
-                    content += `<div class="grid grid-cols-1 gap-2" id="opts-${qId}">`;
-                    indices.forEach(idx => { 
-                        const isCorrect = (idx === q.correct);
-                        // Updated to use btn-option class for consistency with Study Mode
-                        content += `<button class="btn-option" onclick="app.checkPracticeAnswer(this, ${isCorrect}, '${qId}')">${q.options[idx]}</button>`;
-                    });
-                    content += `</div>`;
-                    
-                    content += `<div id="feedback-${qId}" class="hidden mt-4 p-4 bg-green-100 text-green-900 rounded-lg border border-green-200">
-                        <strong>Correct!</strong> <span class="block mt-1 text-sm text-gray-700">${q.explanation}</span>
-                    </div>
-                    <div id="feedback-wrong-${qId}" class="hidden mt-4 p-4 bg-red-100 text-red-900 rounded-lg border border-red-200">
-                        <strong>Incorrect.</strong> Try again.
-                    </div>`;
-
-                } else if (q.type === 'frq') {
-                     content += `
-                        <button onclick="document.getElementById('sol-${qId}').classList.remove('hidden')" class="text-blue-600 font-bold text-sm hover:underline">👀 Reveal Solution</button>
-                        <div id="sol-${qId}" class="hidden mt-4 p-4 bg-white rounded border border-gray-200 shadow-inner">
-                            <h4 class="font-bold text-gray-900 mb-2">Solution Step-by-Step:</h4>
-                            <p class="text-gray-700 mb-3 leading-relaxed">${q.solution}</p>
-                            <div class="flex gap-2 mt-4">
-                                <button onclick="app.generatePracticeQuestion()" class="px-4 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700">Next Question &rarr;</button>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                content += `</div>`;
-                card.innerHTML = content;
-                container.appendChild(card);
-
-                if(window.MathJax) MathJax.typesetPromise();
-                
-                if(q.type === 'chart-gen') {
-                    setTimeout(() => {
-                        const ctx = document.getElementById(q.chartId).getContext('2d');
-                        new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: q.chartData.labels,
-                                datasets: [{
-                                    label: 'f(x)',
-                                    data: q.chartData.data,
-                                    borderColor: '#7c3aed',
-                                    backgroundColor: 'rgba(124, 58, 237, 0.1)',
-                                    borderWidth: 3,
-                                    fill: true,
-                                    tension: 0.4
-                                }]
-                            },
-                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
-                        });
-                    }, 50);
                 }
             },
-
             checkAnswer(qId, selectedIdx, correctIdx) {
                 const feedbackEl = document.getElementById(`feedback-${qId}`);
                 const optsContainer = document.getElementById(`opts-${qId}`);
                 const buttons = optsContainer.querySelectorAll('button');
                 buttons.forEach(btn => btn.disabled = true);
-                
                 if(selectedIdx === correctIdx) {
                     buttons[selectedIdx].classList.add('correct');
                     feedbackEl.className = "mt-4 p-3 bg-green-50 border border-green-200 rounded text-green-800 text-sm block";
                     feedbackEl.innerHTML = `<strong>Correct!</strong> ${this.getExplanation(qId)}`;
-                    this.mastery.add(qId);
-                    this.updateMasteryUI();
+                    this.markMastery(qId, true);
                 } else {
                     buttons[selectedIdx].classList.add('wrong');
                     buttons[correctIdx].classList.add('correct');
@@ -711,125 +506,211 @@
                     feedbackEl.innerHTML = `<strong>Incorrect.</strong> ${this.getExplanation(qId)}`;
                 }
             },
-
             checkPracticeAnswer(btn, isCorrect, qId) {
                 const feedbackCorrect = document.getElementById(`feedback-${qId}`);
                 const feedbackWrong = document.getElementById(`feedback-wrong-${qId}`);
-                
-                // Disable all buttons in this specific question container
                 const parent = btn.parentElement;
                 const siblings = parent.querySelectorAll('button');
                 siblings.forEach(sib => sib.disabled = true);
+                if(isCorrect) {
+                    btn.classList.add('correct'); feedbackCorrect.classList.remove('hidden'); feedbackWrong.classList.add('hidden');
+                } else {
+                    btn.classList.add('wrong'); feedbackWrong.classList.remove('hidden'); feedbackCorrect.classList.add('hidden');
+                }
+            },
+            generatePracticeQuestion() {
+                const generator = generators[this.currentTopic];
+                if(!generator) { alert("Coming soon!"); return; }
+                const q = generator();
+                const qId = 'gen_' + Date.now(); q.id = qId;
+                const container = document.getElementById('generated-question-container');
+                container.innerHTML = ''; container.classList.remove('hidden');
+                document.getElementById('practice-placeholder').classList.add('hidden');
+                const card = document.createElement('div');
+                card.className = "bg-blue-50 border-2 border-blue-200 rounded-xl shadow-md overflow-hidden animate-fade-in";
+                let content = `<div class="p-6"><div class="flex justify-between mb-3"><span class="font-bold text-blue-900 uppercase tracking-wider text-sm">⚡ Practice: ${q.title}</span><button onclick="window.app.generatePracticeQuestion()" class="text-xs bg-white border px-2 py-1 rounded hover:bg-gray-50">New Q</button></div><p class="mb-6 text-gray-800 text-lg font-medium leading-relaxed">${q.question}</p>`;
+                if(q.type === 'chart-gen') content += `<div class="h-64 w-full mb-4 bg-white rounded border"><canvas id="${q.chartId}"></canvas></div>`;
+                
+                if(q.type === 'frq') {
+                    window.currentPracticeAns = q.answerCriteria;
+                    window.currentPracticeSol = q.solution;
+                    window.currentPracticeAttempts = 0;
+                    content += `
+                        <div class="flex gap-2 mb-2">
+                            <input type="text" id="p-input" placeholder="Answer..." class="frq-input">
+                            <button onclick="window.app.submitPracticeFRQ()" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Submit</button>
+                        </div>
+                        <div id="p-feedback" class="hidden mt-3 p-3 rounded text-sm"></div>
+                        <div id="p-solution" class="hidden mt-3 p-4 bg-white rounded border border-blue-200"><p>${q.solution}</p></div>
+                    `;
+                } else {
+                    const indices = q.options.map((_, i) => i);
+                    for (let i = indices.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [indices[i], indices[j]] = [indices[j], indices[i]]; }
+                    content += `<div class="grid grid-cols-1 gap-2" id="opts-${qId}">`;
+                    indices.forEach(idx => { 
+                        content += `<button class="btn-option" onclick="window.app.checkPracticeAnswer(this, ${idx === q.correct}, '${qId}')">${q.options[idx]}</button>`;
+                    });
+                    content += `</div><div id="feedback-${qId}" class="hidden mt-4 p-4 bg-green-100 text-green-900 rounded-lg"><strong>Correct!</strong> ${q.explanation}</div><div id="feedback-wrong-${qId}" class="hidden mt-4 p-4 bg-red-100 text-red-900 rounded-lg"><strong>Incorrect.</strong></div>`;
+                }
+                content += `</div>`; card.innerHTML = content; container.appendChild(card);
+                if(window.MathJax) MathJax.typesetPromise();
+                if(q.type === 'chart-gen') setTimeout(() => {
+                    const ctx = document.getElementById(q.chartId).getContext('2d');
+                    new Chart(ctx, { 
+                        type: 'line', 
+                        data: { 
+                            labels: q.chartData.labels, 
+                            datasets: [{ 
+                                label: 'f(x)', 
+                                data: q.chartData.data, 
+                                borderColor: '#7c3aed', 
+                                backgroundColor: 'rgba(124, 58, 237, 0.1)', 
+                                borderWidth: 3, 
+                                fill: true, 
+                                tension: 0.4 
+                            }] 
+                        }, 
+                        options: { 
+                            responsive: true, 
+                            maintainAspectRatio: false, 
+                            plugins: { 
+                                legend: { display: false } 
+                            }, 
+                            scales: { 
+                                y: { beginAtZero: true } 
+                            } 
+                        } 
+                    });
+                }, 50);
+            },
+            submitPracticeFRQ() {
+                const inputEl = document.getElementById('p-input');
+                const feedbackEl = document.getElementById('p-feedback');
+                const solEl = document.getElementById('p-solution');
+                let val = inputEl.value.trim();
+                if(!val) return;
+                window.currentPracticeAttempts++;
+                
+                let isCorrect = false;
+                if(window.currentPracticeAns.exact) {
+                    const nums = val.match(/-?\d+(\.\d+)?/g);
+                    if(nums && nums.includes(window.currentPracticeAns.exact)) isCorrect = true;
+                }
 
                 if(isCorrect) {
-                    btn.classList.add('correct'); // Use the CSS class we defined
-                    feedbackCorrect.classList.remove('hidden');
-                    feedbackWrong.classList.add('hidden');
+                    inputEl.classList.add('success'); inputEl.disabled = true;
+                    feedbackEl.className = "mt-3 p-3 bg-green-100 text-green-800 rounded block";
+                    feedbackEl.innerHTML = "<strong>Correct!</strong>";
+                    solEl.classList.remove('hidden');
                 } else {
-                    btn.classList.add('wrong'); // Use the CSS class we defined
-                    feedbackWrong.classList.remove('hidden');
-                    feedbackCorrect.classList.add('hidden');
+                    if(window.currentPracticeAttempts >= 3) {
+                        inputEl.classList.add('error'); inputEl.disabled = true;
+                        feedbackEl.className = "mt-3 p-3 bg-red-100 text-red-800 rounded block";
+                        feedbackEl.innerHTML = "<strong>Incorrect.</strong> No tries left.";
+                        solEl.classList.remove('hidden');
+                    } else {
+                        inputEl.classList.add('error'); setTimeout(()=>inputEl.classList.remove('error'), 500);
+                        feedbackEl.className = "mt-3 p-3 bg-yellow-50 text-yellow-800 rounded block";
+                        feedbackEl.innerHTML = `Try again. ${3-window.currentPracticeAttempts} left.`;
+                    }
                 }
             },
-
-            markMastery(qId, isCorrect) {
-                if(isCorrect) this.mastery.add(qId);
-                this.updateMasteryUI();
-            },
-
-            getExplanation(qId) {
-                for(let t in topics) {
-                    const q = topics[t].questions.find(x => x.id === qId);
-                    if(q) return q.explanation;
-                }
-                return "";
-            },
-
+            markMastery(qId, isCorrect) { if(isCorrect) this.mastery.add(qId); this.updateMasteryUI(); },
+            getExplanation(qId) { for(let t in topics) { const q = topics[t].questions.find(x => x.id === qId); if(q) return q.explanation; } return ""; },
             updateMasteryUI() {
-                let totalQ = 0;
-                let masteredQ = this.mastery.size;
-                for(let t in topics) totalQ += topics[t].questions.length;
+                let totalQ = 0; let masteredQ = this.mastery.size; for(let t in topics) totalQ += topics[t].questions.length;
                 const percentage = Math.round((masteredQ / totalQ) * 100);
-                document.getElementById('sidebar-progress').style.width = `${percentage}%`;
-                document.getElementById('sidebar-progress-text').textContent = `${percentage}%`;
-                document.getElementById('total-score-display').textContent = `${masteredQ}/${totalQ}`;
-                
-                const chart = Chart.getChart("masteryChart");
-                if(chart) {
-                    chart.data.datasets[0].data = [masteredQ, totalQ - masteredQ];
-                    chart.update();
-                }
+                document.getElementById('sidebar-progress').style.width = `${percentage}%`; document.getElementById('sidebar-progress-text').textContent = `${percentage}%`; document.getElementById('total-score-display').textContent = `${masteredQ}/${totalQ}`;
+                const chart = Chart.getChart("masteryChart"); if(chart) { chart.data.datasets[0].data = [masteredQ, totalQ - masteredQ]; chart.update(); }
             },
-
             renderOverviewCharts() {
-                 new Chart(document.getElementById('masteryChart'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Mastered', 'Remaining'],
-                        datasets: [{
-                            data: [0, 14],
-                            backgroundColor: ['#2563eb', '#e5e7eb'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: { cutout: '75%', responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-                });
+                 new Chart(document.getElementById('masteryChart'), { type: 'doughnut', data: { labels: ['Mastered', 'Remaining'], datasets: [{ data: [0, 14], backgroundColor: ['#2563eb', '#e5e7eb'], borderWidth: 0 }] }, options: { cutout: '75%', responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });
             },
-
             initStaticChart(chartId) {
                 const ctx = document.getElementById(chartId).getContext('2d');
                 if(Chart.getChart(chartId)) return;
-                
-                if(chartId === 'chartQ7') {
-                     new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: [0, 1, 2, 3, 4, 5, 6],
-                            datasets: [{
-                                label: "f'(x)",
-                                data: [-2, 0.5, 1.5, 3, 0, -1.5, 1],
-                                borderColor: '#3b82f6',
-                                borderWidth: 3,
-                                tension: 0.4
-                            }]
-                        },
-                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, annotation: { annotations: { line1: { type: 'line', scaleID: 'y', value: 0, borderColor: 'black', borderWidth: 1 } } } }, scales: { y: { grid: { display: false } }, x: { grid: { display: false } } } }
-                    });
-                } else if (chartId === 'chartQ12') {
-                    new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: [0, 1, 2, 3, 4, 6, 7, 8, 9],
-                            datasets: [{
-                                data: [0, 1, 2, 0, -2, -2, 0, 1, 2],
-                                borderColor: '#22c55e',
-                                borderWidth: 3,
-                                fill: true,
-                                backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                                tension: 0
-                            }]
-                        },
-                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: (c) => c.tick.value === 0 ? 'black':'#eee'} } } }
-                    });
-                } else if (chartId === 'chartQ10') {
-                     new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: [0, 3, 6, 9, 12, 15, 18],
-                            datasets: [{
-                                data: [9, 7, 4, 3, 1, 3, 5],
-                                borderColor: '#a855f7',
-                                borderWidth: 3,
-                                tension: 0.4
-                            }]
-                        },
-                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-                    });
+                if(chartId === 'chartQ7') { 
+                    new Chart(ctx, { 
+                        type: 'line', 
+                        data: { 
+                            labels: [0, 1, 2, 3, 4, 5, 6], 
+                            datasets: [{ 
+                                label: "f'(x)", 
+                                data: [-2, 0.5, 1.5, 3, 0, -1.5, 1], 
+                                borderColor: '#3b82f6', 
+                                borderWidth: 3, 
+                                tension: 0.4 
+                            }] 
+                        }, 
+                        options: { 
+                            responsive: true, 
+                            maintainAspectRatio: false, 
+                            plugins: { 
+                                legend: { display: false }, 
+                                annotation: { 
+                                    annotations: { 
+                                        line1: { 
+                                            type: 'line', 
+                                            scaleID: 'y', 
+                                            value: 0, 
+                                            borderColor: 'black', 
+                                            borderWidth: 1 
+                                        } 
+                                    } 
+                                } 
+                            }, 
+                            scales: { 
+                                y: { grid: { display: false } }, 
+                                x: { grid: { display: false } } 
+                            } 
+                        } 
+                    }); 
+                }
+                else if (chartId === 'chartQ12') { 
+                    new Chart(ctx, { 
+                        type: 'line', 
+                        data: { 
+                            labels: [0, 1, 2, 3, 4, 6, 7, 8, 9], 
+                            datasets: [{ 
+                                data: [0, 1, 2, 0, -2, -2, 0, 1, 2], 
+                                borderColor: '#22c55e', 
+                                borderWidth: 3, 
+                                fill: true, 
+                                backgroundColor: 'rgba(34, 197, 94, 0.1)', 
+                                tension: 0 
+                            }] 
+                        }, 
+                        options: { 
+                            responsive: true, 
+                            maintainAspectRatio: false, 
+                            plugins: { legend: { display: false } }, 
+                            scales: { y: { grid: { color: (c) => c.tick.value === 0 ? 'black':'#eee'} } } 
+                        } 
+                    }); 
+                }
+                else if (chartId === 'chartQ10') { 
+                    new Chart(ctx, { 
+                        type: 'line', 
+                        data: { 
+                            labels: [0, 3, 6, 9, 12, 15, 18], 
+                            datasets: [{ 
+                                data: [9, 7, 4, 3, 1, 3, 5], 
+                                borderColor: '#a855f7', 
+                                borderWidth: 3, 
+                                tension: 0.4 
+                            }] 
+                        }, 
+                        options: { 
+                            responsive: true, 
+                            maintainAspectRatio: false, 
+                            plugins: { legend: { display: false } } 
+                        } 
+                    }); 
                 }
             }
         };
 
-        document.addEventListener('DOMContentLoaded', () => app.init());
+        document.addEventListener('DOMContentLoaded', () => window.app.init());
     </script>
 </body>
 </html>
